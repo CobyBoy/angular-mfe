@@ -281,3 +281,29 @@ bootstrap Angular
 ## Rol de `checkManifest()`
 
 En la implementación analizada, `checkManifest()` actúa como un mecanismo de recuperación (fallback). En el flujo normal no realiza ninguna acción, ya que el manifest ya fue cargado antes del bootstrap.
+
+# Clase 10
+# Clase 10 - Exponer rutas en lugar de componentes
+
+En aplicaciones Angular standalone, es común que un microfrontend exponga su configuración de rutas (`Routes`) en lugar de un componente.
+
+## Antes
+
+Shell → AppComponent
+
+El Shell conoce el componente que implementa el microfrontend.
+
+## Después
+
+Shell → Routes
+
+El Shell solo monta las rutas del microfrontend.
+
+El propio microfrontend decide qué componentes, rutas hijas, guards y resolvers utiliza internamente.
+
+## Ventajas
+
+- Mayor encapsulamiento.
+- El Shell no depende de la estructura interna del microfrontend.
+- Permite que el microfrontend crezca sin modificar el Shell.
+- Facilita la organización de rutas complejas dentro de cada microfrontend.

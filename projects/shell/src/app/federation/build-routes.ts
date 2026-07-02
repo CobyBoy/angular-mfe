@@ -10,7 +10,7 @@ export function buildRoutes(manifest: CustomManifest): Routes {
     const entry = manifest[mfe];
     return {
       path: entry.routePath,
-      loadComponent: () => {
+      loadChildren: () => {
         console.log('Loading remote module for route:', entry.routePath);
         return loadRemoteModule({
           type: 'manifest',

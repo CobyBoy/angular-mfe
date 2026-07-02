@@ -2,7 +2,7 @@
   "products": {
     "routePath": "products",
     "remoteEntry": "http://localhost:4201/remoteEntry.js",
-    "exposedModule": "./Component",
-    "exportName": "AppComponent"
+    "exposedModule": "./Routes",
+    "exportName": "routes"
   }
 }
