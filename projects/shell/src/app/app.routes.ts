@@ -1,14 +1,17 @@
 import { Routes } from '@angular/router';
-import { loadRemoteModule } from '@angular-architects/module-federation';
+import { getManifest, loadRemoteModule } from '@angular-architects/module-federation';
+import { CustomManifest } from './federation/manifest.types';
+import { buildRoutes } from './federation/build-routes';
+
+const manifest = getManifest<CustomManifest>();
+
+export const routesFromManifest: Routes = manifest ? buildRoutes(manifest) : [];
 
 export const routes: Routes = [
-  {
-    path: 'products',
-    loadComponent: () =>
-      loadRemoteModule({
-        type: 'module',
-        remoteEntry: 'http://localhost:4201/remoteEntry.js',
-        exposedModule: './Component',
-      }).then((m) => m.AppComponent),
-  },
+     {
+        path: 'home',
+        loadComponent: () => import('./pages/home/home.component').then((m) => m.HomeComponent),
+    },
+    ...routesFromManifest,
+   
 ];

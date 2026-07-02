@@ -1,4 +1,4 @@
-Clase 1: Creación del Host y del Remote
+# Clase 1: Creación del Host y del Remote
 Objetivo
 
 Crear un entorno de aprendizaje para entender Webpack Module Federation con Angular 18, sin preocuparnos todavía por manifests, backend o múltiples repositorios.
@@ -108,10 +108,11 @@ Además de crear archivos nuevos, configura el servidor de desarrollo.
 
 Ejemplo:
 
-```json
+json
 "port": 4201,
 "publicHost": "http://localhost:4201",
 "extraWebpackConfig": "projects/products/webpack.config.js"
+
 
 # Clase 3 - El Host inicia la comunicación
 
@@ -121,7 +122,7 @@ Ejemplo:
 
 El Host conoce los Remotes desde `webpack.config.js`.
 
-```js
+js
 remotes: {
   products: "products@http://localhost:4201/remoteEntry.js"
 }
@@ -176,3 +177,107 @@ El Shell normalmente mantiene:
 - router principal.
 
 Los microfrontends ocupan únicamente una parte de la pantalla.
+
+Clase 5
+# Clase 5 - ¿Por qué existe un manifest?
+
+## Problema
+
+El Host conoce las URLs de los Remotes.
+
+Ejemplo:
+
+ts
+remoteEntry: "http://localhost:4201/remoteEntry.js"
+
+Si cambia la ubicación del Remote, es necesario modificar y volver a desplegar el Host.
+
+Objetivo del manifest
+
+Desacoplar el Host de las URLs reales.
+
+En lugar de conocer:
+
+la URL del Remote,
+
+el Host solo conoce:
+
+el nombre del microfrontend.
+
+Luego consulta un manifest que le indica dónde se encuentra.
+
+# Clase 7 - ¿Cuándo cargar el manifest?
+
+## Dos estrategias
+
+### Leer el manifest en cada navegación
+
+Desventajas:
+
+- Un request por navegación.
+- Mayor latencia.
+- Dependencia constante del servidor del manifest.
+- Se descarga repetidamente la misma información.
+
+### Cargar el manifest al iniciar la aplicación
+
+Ventajas:
+
+- Un único request.
+- El manifest queda disponible en memoria.
+- La navegación es inmediata.
+- El Shell conoce todos los Remotes antes de comenzar a navegar.
+
+## Principio de diseño
+
+El manifest representa la configuración de la aplicación, no datos del usuario.
+
+Por lo tanto, tiene sentido cargarlo durante la inicialización y reutilizarlo durante toda la vida de la aplicación.
+
+# Clase 8 - El manifest registrado en memoria
+
+## Dos conceptos diferentes
+
+### Manifest físico
+
+Es un archivo JSON (o una respuesta HTTP) que contiene la ubicación de los remotes.
+
+### Manifest registrado
+
+Una vez obtenido el JSON, se registra en la librería mediante:
+
+ts
+setManifest(...)
+A partir de ese momento:
+
+getManifest()
+
+devuelve el contenido desde memoria, sin realizar nuevas peticiones HTTP.
+
+Ventaja
+
+loadRemoteModule() puede resolver automáticamente el remoteEntry usando el nombre del Remote (remoteName), sin necesidad de indicar la URL en cada ruta.
+
+# Clase 9
+# Clase 9 - ¿Cuándo cargar el manifest?
+
+Después de revisar una implementación real y verificar el orden de ejecución, la estrategia más limpia es:
+
+main.ts
+    ↓
+fetch(manifest)
+    ↓
+setManifest()
+    ↓
+bootstrap Angular
+
+## Ventajas
+
+- Angular inicia con el manifest ya disponible.
+- `app.routes.ts` puede construir las rutas dinámicamente durante la inicialización.
+- No es necesario modificar el Router con `resetConfig()`.
+- No es necesario volver a solicitar el manifest durante la vida de la aplicación.
+
+## Rol de `checkManifest()`
+
+En la implementación analizada, `checkManifest()` actúa como un mecanismo de recuperación (fallback). En el flujo normal no realiza ninguna acción, ya que el manifest ya fue cargado antes del bootstrap.
