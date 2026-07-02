@@ -3,6 +3,7 @@
     "routePath": "products",
     "remoteEntry": "http://localhost:4201/remoteEntry.js",
     "exposedModule": "./Routes",
-    "exportName": "routes"
+    "exportName": "routes",
+    "exposedType": "route"
   }
 }

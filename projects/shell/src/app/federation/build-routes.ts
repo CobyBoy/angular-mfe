@@ -8,9 +8,10 @@ export function buildRoutes(manifest: CustomManifest): Routes {
   }
   return Object.keys(manifest).map((mfe) => {
     const entry = manifest[mfe];
+   const loader = entry.exposedType === 'component' ? 'loadComponent' : 'loadChildren';
     return {
       path: entry.routePath,
-      loadChildren: () => {
+      [loader]: () => {
         console.log('Loading remote module for route:', entry.routePath);
         return loadRemoteModule({
           type: 'manifest',
