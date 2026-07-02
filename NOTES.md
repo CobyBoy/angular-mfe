@@ -99,3 +99,80 @@ En proyectos reales suele reemplazarse por una lista explícita de librerías co
 @angular/common
 @angular/router
 rxjs
+
+# Clase 2 - Host y Remote funcionando
+
+## El schematic también modifica `angular.json`
+
+Además de crear archivos nuevos, configura el servidor de desarrollo.
+
+Ejemplo:
+
+```json
+"port": 4201,
+"publicHost": "http://localhost:4201",
+"extraWebpackConfig": "projects/products/webpack.config.js"
+
+# Clase 3 - El Host inicia la comunicación
+
+## Existen dos formas de localizar un Remote
+
+### Configuración estática
+
+El Host conoce los Remotes desde `webpack.config.js`.
+
+```js
+remotes: {
+  products: "products@http://localhost:4201/remoteEntry.js"
+}
+
+Luego puede referirse al Remote por su nombre.
+
+Configuración dinámica
+
+El Host recibe directamente la URL del remoteEntry.js.
+
+remoteEntry: "http://localhost:4201/remoteEntry.js"
+
+En este caso no necesita conocer previamente el nombre del Remote.
+
+# Clase 4 - Primera comunicación entre Host y Remote
+
+## Primer microfrontend funcionando
+
+El Shell puede renderizar un componente que pertenece a otra aplicación.
+
+Flujo:
+
+Router
+    ↓
+loadRemoteModule()
+    ↓
+remoteEntry.js
+    ↓
+Webpack obtiene el componente
+    ↓
+Angular lo renderiza
+
+## Angular no descarga el Remote
+
+El runtime de Webpack es el encargado de:
+
+- descargar `remoteEntry.js`;
+- localizar el módulo expuesto;
+- devolver el objeto exportado.
+
+Angular solamente renderiza el componente recibido.
+
+## El Shell sigue existiendo
+
+Cuando se carga un microfrontend, el Shell no desaparece.
+
+El Shell normalmente mantiene:
+
+- layout;
+- navegación;
+- autenticación;
+- router principal.
+
+Los microfrontends ocupan únicamente una parte de la pantalla.
