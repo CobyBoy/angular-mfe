@@ -120,11 +120,10 @@
 			"prefix": "app",
 			"architect": {
 				"build": {
-					"builder": "@angular-devkit/build-angular:application",
+					"builder": "ngx-build-plus:browser",
 					"options": {
 						"outputPath": "dist/products",
 						"index": "projects/products/src/index.html",
-						"browser": "projects/products/src/main.ts",
 						"polyfills": [
 							"zone.js"
 						],
@@ -133,13 +132,17 @@
 						"assets": [
 							{
 								"glob": "**/*",
-								"input": "projects/products/public"
+								"input": "projects/products/public",
+								"output": "."
 							}
 						],
 						"styles": [
 							"projects/products/src/styles.scss"
 						],
-						"scripts": []
+						"scripts": [],
+						"main": "projects/products/src/main.ts",
+						"extraWebpackConfig": "projects/products/webpack.config.js",
+						"commonChunk": false
 					},
 					"configurations": {
 						"production": {
@@ -155,7 +158,8 @@
 									"maximumError": "4kB"
 								}
 							],
-							"outputHashing": "all"
+							"outputHashing": "all",
+							"extraWebpackConfig": "projects/products/webpack.prod.config.js"
 						},
 						"development": {
 							"optimization": false,
@@ -166,16 +170,22 @@
 					"defaultConfiguration": "production"
 				},
 				"serve": {
-					"builder": "@angular-devkit/build-angular:dev-server",
+					"builder": "ngx-build-plus:dev-server",
 					"configurations": {
 						"production": {
-							"buildTarget": "products:build:production"
+							"buildTarget": "products:build:production",
+							"extraWebpackConfig": "projects/products/webpack.prod.config.js"
 						},
 						"development": {
 							"buildTarget": "products:build:development"
 						}
 					},
-					"defaultConfiguration": "development"
+					"defaultConfiguration": "development",
+					"options": {
+						"port": 4201,
+						"publicHost": "http://localhost:4201",
+						"extraWebpackConfig": "projects/products/webpack.config.js"
+					}
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n"
