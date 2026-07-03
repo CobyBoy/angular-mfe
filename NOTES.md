@@ -307,3 +307,35 @@ El propio microfrontend decide qué componentes, rutas hijas, guards y resolvers
 - El Shell no depende de la estructura interna del microfrontend.
 - Permite que el microfrontend crezca sin modificar el Shell.
 - Facilita la organización de rutas complejas dentro de cada microfrontend.
+
+# Clase 11 
+# Shared dependencies
+
+`shared` evita que cada microfrontend cargue su propia copia de una dependencia.
+
+Sin `shared`:
+
+Shell → Angular
+Products → Angular
+
+Con `shared`:
+
+Shell ─┐
+        ├── Angular (una única instancia)
+Products┘
+
+## ¿Qué conviene compartir?
+
+Compartir dependencias que representen infraestructura o estado:
+
+- @angular/core
+- @angular/common
+- @angular/router
+- rxjs
+- librerías propias con servicios (Auth, Design System, etc.)
+
+No es necesario compartir utilidades puras (por ejemplo, lodash o date-fns) salvo que exista una razón específica.
+
+## Evitar `shareAll()`
+
+`shareAll()` es útil para comenzar o prototipar, pero en proyectos reales es preferible declarar explícitamente las dependencias compartidas para tener un mayor control sobre la arquitectura.

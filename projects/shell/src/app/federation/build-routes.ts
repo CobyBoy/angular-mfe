@@ -12,7 +12,6 @@ export function buildRoutes(manifest: CustomManifest): Routes {
     return {
       path: entry.routePath,
       [loader]: () => {
-        console.log('Loading remote module for route:', entry.routePath);
         return loadRemoteModule({
           type: 'manifest',
           remoteName: mfe,

@@ -1,4 +1,4 @@
-const { shareAll, withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack');
+const { share, withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack');
 
 module.exports = withModuleFederationPlugin({
 
@@ -9,8 +9,27 @@ module.exports = withModuleFederationPlugin({
     './Routes': './projects/products/src/app/app.routes.ts',
   },
 
-  shared: {
-    ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
+  shared: share({
+  '@angular/core': {
+    singleton: true,
+    strictVersion: true,
+    requiredVersion: 'auto',
   },
+  '@angular/common': {
+    singleton: true,
+    strictVersion: true,
+    requiredVersion: 'auto',
+  },
+  '@angular/router': {
+    singleton: true,
+    strictVersion: true,
+    requiredVersion: 'auto',
+  },
+  rxjs: {
+    singleton: true,
+    strictVersion: true,
+    requiredVersion: 'auto',
+  },
+})
 
 });
