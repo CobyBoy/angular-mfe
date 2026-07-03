@@ -3,7 +3,7 @@ const { share, withModuleFederationPlugin } = require('@angular-architects/modul
 module.exports = withModuleFederationPlugin({
 
   remotes: {
-    "products": "http://localhost:4200/remoteEntry.js",    
+    "products": "http://localhost:4201/remoteEntry.js",    
   },
 
   shared: share({
@@ -27,6 +27,11 @@ module.exports = withModuleFederationPlugin({
     strictVersion: true,
     requiredVersion: 'auto',
   },
+  "@mfe/communication-sdk": {
+    singleton: true,
+    strictVersion: false,
+    requiredVersion: false,
+  }
 })
 
 });

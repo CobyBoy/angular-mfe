@@ -30,6 +30,11 @@ module.exports = withModuleFederationPlugin({
     strictVersion: true,
     requiredVersion: 'auto',
   },
+  "@mfe/communication-sdk": {
+    singleton: true,
+    strictVersion: false,
+    requiredVersion: false,
+  }
 })
 
 });
