@@ -1,27 +1,57 @@
-# MfeCourse
+# Angular Micro Frontends Playground
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.21.
+A reference project for experimenting with **Micro Frontend architectures** using **Angular** and **Webpack Module Federation**.
 
-## Development server
+This repository contains a Shell application and multiple independent Micro Frontends used to validate architectural decisions, runtime behavior, integration strategies, dependency sharing, and cross-framework interoperability.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Features
 
-## Code scaffolding
+- Angular Shell (Host)
+- Angular Remote
+- Webpack Module Federation
+- Dynamic remote loading
+- Manifest-based remote configuration
+- Dynamic route generation
+- Standalone component exposure
+- Shared dependency configuration
+- Browser API communication (`CustomEvent`, `BroadcastChannel`, `postMessage`)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Project Structure
 
-## Build
+```text
+projects/
+├── shell/        # Host application
+└── products/     # Remote application
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Getting Started
 
-## Running unit tests
+Install dependencies:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+npm install
+```
 
-## Running end-to-end tests
+Run the Shell:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```bash
+ng serve shell
+```
 
-## Further help
+Run the Angular Remote:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```bash
+ng serve products
+```
+
+Or run all configured applications:
+
+```bash
+npm run run:all
+```
+
+## Technologies
+
+- Angular 18
+- Webpack Module Federation
+- TypeScript
